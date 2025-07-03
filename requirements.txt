@@ -3,3 +3,4 @@ crewai
 lime
 shap
 alibi
+streamlit
