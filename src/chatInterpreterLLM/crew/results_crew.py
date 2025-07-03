@@ -1,0 +1,4 @@
+from src.chatInterpreterLLM.crew.LIME_crew import return_resultado_crew_LIME
+from src.chatInterpreterLLM.crew.SHAP_crew import return_resultado_crew_SHAP
+from src.chatInterpreterLLM.crew.ANCHOR_crew import return_resultado_crew_ANCHOR
+from src.chatInterpreterLLM.crew.integrador_crew import return_resultado_crew_integrador

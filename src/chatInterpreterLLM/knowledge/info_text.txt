@@ -1,0 +1,127 @@
+1. Título de la Base de Datos: 
+Abandono Escolar – Datos para la Predicción del Abandono en Instituciones Educativas
+
+2. Fuentes:
+- Fuente original:
+Institución Educativa y/o Departamento de Educación (Datos recolectados por organismos oficiales encargados de la estadística educativa).
+
+- Colaborador:
+Equipo de análisis y desarrollo de modelos predictivos en educación (por ejemplo, el grupo de investigación de la universidad asociada).
+
+- Fecha de recepción:
+Fecha de recopilación original de los datos (la fecha exacta debe ser consultada en la documentación original del dataset).
+
+3. Usos Previos:
+
+El dataset ha sido empleado en estudios y tesis orientadas a la identificación temprana del riesgo de abandono escolar.
+
+Se ha utilizado para el benchmarking de diferentes modelos de clasificación, incluyendo Random Forest, regresión logística y otros algoritmos de machine learning.
+
+Los análisis previos han evaluado variables socioeconómicas, académicas y de carácter personal para predecir la probabilidad de abandono.
+
+4. Párrafo de Información Relevante:
+Este conjunto de datos se centra en la predicción del abandono escolar a partir de información demográfica, académica y socioeconómica de los estudiantes. Se incluyen variables tales como estado civil, modalidad de aplicación, orden de aplicación, curso, asistencia (diurna o vespertina), calificaciones previas y otros indicadores relacionados con el rendimiento académico y el entorno familiar. La combinación de estos factores permite identificar patrones y generar modelos predictivos que ayuden a intervenir tempranamente en casos de riesgo. Además, se han incorporado variables contextuales macroeconómicas (como tasa de desempleo, inflación y PIB) para evaluar el impacto del entorno en la continuidad escolar.
+
+5. Número de Instancias:
+El dataset contiene un número considerable de registros (la cantidad exacta debe confirmarse a partir del archivo, pero se estima en cientos de instancias).
+
+6. Número de Atributos:
+El dataset está compuesto por 36 atributos, entre los cuales se encuentran variables de carácter:
+
+- Nominal: Ej. “Marital status”, “Gender”, “Nacionality”, “Displaced”, “Scholarship holder”.
+
+- Numérico/Continuo: Ej. “Admission grade”, “Age at enrollment”, “Curricular units 1st sem (grade)”, “Unemployment rate”, “Inflation rate”, “GDP”.
+
+- Categórico/Ordinal: Algunas variables relacionadas con el nivel de calificación o el orden de aplicación.
+
+7. Información de los Atributos:
+Cada atributo se describe de la siguiente forma:
+- Marital status: Indica el estado civil del estudiante (por ejemplo, soltero, casado o en unión de hecho). Esto puede influir en las condiciones socioeconómicas y en la estabilidad del entorno familiar.
+
+- Application mode: Describe el modo o canal mediante el cual el estudiante presenta su solicitud (por ejemplo, en línea, presencial o por recomendación). Esto puede afectar el proceso de admisión.
+
+- Application order: Refleja el orden en que se recibe o procesa la solicitud del estudiante. Un orden de aplicación temprano o tardío podría tener implicaciones en la asignación de cupos.
+
+- Course: Especifica el curso o programa educativo al que el estudiante está aplicando. Diferentes cursos pueden tener distintos requisitos y niveles de exigencia.
+
+- Daytime/evening attendance: Indica si el estudiante asiste a clases durante el día o en horario nocturno. Esta variable puede reflejar diferencias en la disponibilidad horaria o en las responsabilidades laborales y familiares.
+
+- Previous qualification: Señala si el estudiante posee algún título o certificación previa. Sirve para conocer el nivel formativo de base sobre el que se integrará el nuevo curso.
+
+- Previous qualification (grade): Es la calificación o puntaje obtenido en la formación previa. Una nota alta o baja puede influir en la percepción de las capacidades del estudiante.
+
+- Nacionality: Indica la nacionalidad del estudiante. La procedencia puede estar asociada a políticas de admisión diferenciadas o a necesidades especiales en la atención educativa.
+
+- Mother's qualification: Refleja el nivel educativo alcanzado por la madre del estudiante, lo que suele relacionarse con el apoyo académico en el hogar.
+
+- Father's qualification: Similar al anterior, describe el nivel educativo alcanzado por el padre, que puede influir en el entorno y apoyo familiar.
+
+- Mother's occupation: Describe la profesión u ocupación de la madre, lo cual puede ser un indicador del nivel socioeconómico y del tipo de recursos disponibles en el hogar.
+
+- Father's occupation: De igual forma, indica la ocupación del padre y se utiliza para contextualizar la situación económica y el ambiente familiar del estudiante.
+
+- Admission grade: Es la calificación o puntaje con el que el estudiante es admitido en el curso. Este dato suele reflejar su desempeño académico previo y puede influir en su trayectoria educativa.
+
+- Displaced: Un indicador (generalmente binario) que señala si el estudiante ha sido desplazado (por ejemplo, en casos de migración forzada o conflictos), lo que puede afectar su continuidad educativa.
+
+- Educational special needs: Indica si el estudiante requiere adaptaciones o servicios especiales para su aprendizaje. Esto puede incluir necesidades educativas especiales o discapacidades.
+
+- Debtor: Señala si el estudiante tiene deudas pendientes, lo que podría afectar su situación financiera y, en algunos casos, su acceso a becas o ayudas.
+
+- Tuition fees up to date: Indica si el estudiante se encuentra al día con el pago de las matrículas. El retraso en estos pagos puede ser un factor asociado al abandono escolar.
+
+- Gender: Define el género del estudiante. Las diferencias de género pueden influir en la experiencia educativa y en las tasas de abandono.
+
+- Scholarship holder: Indica si el estudiante es beneficiario de una beca, lo que puede ser un factor de protección frente al abandono escolar.
+
+- Age at enrollment: Es la edad del estudiante al momento de la inscripción. Las edades atípicas pueden estar asociadas a riesgos de deserción o a trayectorias atípicas.
+
+- International: Señala si el estudiante es internacional. Esto puede implicar diferencias en el proceso de integración y en el apoyo institucional.
+
+- Curricular units 1st sem (credited): Número de unidades curriculares del primer semestre que el estudiante ha logrado acreditar. Sirve como indicador de su rendimiento académico inicial.
+
+- Curricular units 1st sem (enrolled): Número total de unidades en las que se inscribió el estudiante durante el primer semestre, reflejando la carga académica asignada.
+
+- Curricular units 1st sem (evaluations): Indica la cantidad de evaluaciones realizadas en el primer semestre, lo que puede dar una idea de la intensidad evaluativa del curso.
+
+- Curricular units 1st sem (approved): Número de unidades que el estudiante aprobó en el primer semestre, un dato clave en la evaluación de su desempeño.
+
+- Curricular units 1st sem (grade): La calificación promedio obtenida en el primer semestre, que resume el rendimiento académico global en ese periodo.
+
+- Curricular units 1st sem (without evaluations): Número de unidades cursadas en el primer semestre que, por alguna razón, no tuvieron evaluación formal. Esto podría explicar vacíos en el seguimiento académico.
+
+- Curricular units 2nd sem (credited): Equivalente al atributo 22, pero para el segundo semestre: unidades acreditadas que reflejan el avance en la segunda parte del año académico.
+
+- Curricular units 2nd sem (enrolled): Número total de unidades en las que se inscribió el estudiante en el segundo semestre, indicando la carga académica de esa etapa.
+
+- Curricular units 2nd sem (evaluations): Cantidad de evaluaciones realizadas en el segundo semestre, que ayuda a valorar la presión y estructura evaluativa en la segunda mitad del curso.
+
+- Curricular units 2nd sem (approved): Número de unidades aprobadas en el segundo semestre, clave para medir el éxito académico en la continuidad del curso.
+
+- Curricular units 2nd sem (grade): Calificación promedio obtenida en el segundo semestre, que permite comparar el rendimiento a lo largo del año.
+
+- Curricular units 2nd sem (without evaluations): Número de unidades del segundo semestre cursadas sin evaluación formal, lo que puede influir en la consistencia del seguimiento académico.
+
+- Unemployment rate: La tasa de desempleo en el área o país en el momento de la inscripción, la cual puede contextualizar el entorno socioeconómico que influye en las decisiones de abandono.
+
+- Inflation rate: La tasa de inflación vigente, que sirve como indicador del contexto económico y puede afectar el poder adquisitivo de las familias.
+
+- GDP: El Producto Interno Bruto (PIB) o una medida similar de la actividad económica de la región o país, que aporta una perspectiva del entorno macroeconómico en el que se desenvuelve el estudiante.
+
+Cada atributo está pensado para capturar una dimensión relevante que puede influir en el riesgo de abandono escolar. Por ejemplo, mientras que las variables académicas (como las unidades aprobadas y las calificaciones) proporcionan una medida directa del rendimiento y la adaptación del estudiante al currículo, los indicadores socioeconómicos (como la tasa de desempleo, la inflación y el PIB) ayudan a contextualizar el entorno en el que se desenvuelve y las posibles presiones externas que pueden afectar la continuidad de sus estudios.
+
+8. Target: Variable objetivo que indica el resultado final, categorizado generalmente en “Dropout” (abandono), “Graduate” (graduado) y “Enrolled” (matriculado).
+
+9. Valores Faltantes:
+Según la documentación disponible, no se han identificado valores faltantes en el conjunto de datos, lo que permite un análisis directo de las variables.
+
+10. Distribución de Clases:
+El atributo “Target” clasifica a los estudiantes en tres categorías:
+
+- Dropout: Estudiantes que abandonaron la institución.
+
+- Graduate: Estudiantes que concluyeron satisfactoriamente su formación.
+
+- Enrolled: Estudiantes que continúan matriculados y en proceso de estudio.
+
+La distribución exacta de cada clase deberá ser verificada con un análisis estadístico del dataset para conocer los porcentajes y posibles desbalances.
