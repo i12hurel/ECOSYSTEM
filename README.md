@@ -1,4 +1,4 @@
-# ECOSYSTEM-MODULADO
+# ECOSYSTEM
 
 Este proyecto contiene un sistema de interpretación de modelos de machine learning utilizando técnicas como LIME, SHAP y ANCHOR, implementado con CrewAI y otros módulos de IA explicable.
 
@@ -96,6 +96,6 @@ python -m src.chatInterpreterLLM.main
 ## ⚠️ Notas importantes
 
 * **No subas el `venv/`** a GitHub. Usa `.gitignore`.
-* Asegúde tu conexión a internet para usar CrewAI con los modelos LLM.
+* Asegúrate de tu conexión a internet para usar CrewAI con los modelos LLM.
 
 ---
