@@ -1,4 +1,4 @@
-from src.chatInterpreterLLM.training.model import value_model, value_x_train
+from src.chatInterpreterLLM.training.model import value_model
 from src.chatInterpreterLLM.knowledge.info import pedir_caracteristicas
 import re
 from lime.lime_tabular import LimeTabularExplainer 
@@ -6,9 +6,7 @@ import json
 import pandas as pd
 import numpy as np
 
-def explicacion_LIME():
-    model = value_model() 
-    x_train = value_x_train()
+def explicacion_LIME(model, x_train):
     instancia = pedir_caracteristicas()
     instancia.columns = x_train.columns
 
