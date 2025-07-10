@@ -4,3 +4,4 @@ lime
 shap
 alibi
 streamlit
+crewai.tools

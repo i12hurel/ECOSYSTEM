@@ -6,8 +6,8 @@ import json
 import pandas as pd
 import numpy as np
 
-def explicacion_LIME(model, x_train):
-    instancia = pedir_caracteristicas()
+def explicacion_LIME(model, x_train, instancia):
+    instancia = instancia.copy()
     instancia.columns = x_train.columns
 
     probabilidades = model.predict_proba(instancia)[0] #devuelve las probabilidades de cada clase

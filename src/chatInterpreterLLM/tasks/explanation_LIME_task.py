@@ -2,7 +2,7 @@ from crewai import Task
 from src.chatInterpreterLLM.agents.explanation_LIME_agent import return_explanation_LIME_agent
 from src.chatInterpreterLLM.tools.explanation_LIME import explicacion_LIME
 
-def return_task_explanation_LIME(model, x_train):
+def return_task_explanation_LIME(model, x_train, instancia):
   task_explanation_LIME = Task(
       description="""Analyze the LIME explanation JSON below and provide a natural language interpretation. 
                     **Follow these rules:**
@@ -32,7 +32,7 @@ def return_task_explanation_LIME(model, x_train):
       expected_output="""Clear text explaining key factors. Structured text with 3 positive and 3 negative contributors + prediction rationale.
                       Text with format: [Feature] = [Value]: [Weight Explanation]. """,
       agent=return_explanation_LIME_agent(),
-      inputs={"lime_output": explicacion_LIME(model, x_train)}, 
+      inputs={"lime_output": explicacion_LIME(model, x_train, instancia)}, 
   )
   
   return task_explanation_LIME
