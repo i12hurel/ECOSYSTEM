@@ -2,9 +2,12 @@ from crewai import Agent, LLM
 from src.chatInterpreterLLM.env import enviroment
 from src.chatInterpreterLLM.tools.gemini_tools import (
     PedirDatasetTool,
-    EjecutarCrewLIMETool,
     AñadirContextoTool,
-    ReiniciarTool
+    ReiniciarTool,
+    RecibirInstanciaDatasetTool,
+    EjecutarCrewLIMEToolInstanciaDataset,
+    EjecutarCrewLIMEToolInstanciaNueva,
+    CargarMetadataTool
 )
 def return_gemini_agent(user_message: str, system_state: dict):
     
@@ -24,9 +27,12 @@ def return_gemini_agent(user_message: str, system_state: dict):
         ),
         tools=[
             PedirDatasetTool(),
-            EjecutarCrewLIMETool(),
             AñadirContextoTool(),
-            ReiniciarTool()
+            ReiniciarTool(),
+            RecibirInstanciaDatasetTool(),
+            EjecutarCrewLIMEToolInstanciaDataset(),
+            EjecutarCrewLIMEToolInstanciaNueva(),
+            CargarMetadataTool()
         ]
     )
     return gemini_agent
