@@ -5,6 +5,7 @@ import json
 from src.chatInterpreterLLM.training.model import value_model
 from src.chatInterpreterLLM.crew.gemini_crew import return_resultado_crew_gemini
 
+
 st.set_page_config(page_title="ML Explanation Chatbot", page_icon="💬")
 
 # Initialize session state
@@ -88,6 +89,7 @@ if user_input:
 
     if "nueva instancia" in user_input.lower() or "subir una instancia" in user_input.lower():
         st.session_state.show_instance_uploader = True
+
     # Current system state
     system_state = {
         "dataset_loaded": st.session_state.dataset is not None,
@@ -96,7 +98,11 @@ if user_input:
         "metadata_present": st.session_state.metadata is not None,
         "notes_count": len(st.session_state.expert_notes),
         "expert_notes": st.session_state.expert_notes,
-        "instance_uploaded": st.session_state.dataset_instance is not None,
+        "instance_uploaded": (
+                st.session_state.dataset_instance is not None and
+                isinstance(st.session_state.dataset_instance, pd.DataFrame) and
+                st.session_state.dataset_instance.shape[0] == 1
+)
     }
 
     # Crew execution

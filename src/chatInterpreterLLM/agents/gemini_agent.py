@@ -1,18 +1,19 @@
 from crewai import Agent, LLM
 from src.chatInterpreterLLM.env import enviroment
 from src.chatInterpreterLLM.tools.gemini_tools import (
-    PedirDatasetTool,
-    AñadirContextoTool,
-    ReiniciarTool,
-    RecibirInstanciaDatasetTool,
-    EjecutarCrewLIMEToolInstanciaDataset,
-    EjecutarCrewLIMEToolInstanciaNueva,
-    CargarMetadataTool
+    RequestDatasetTool,
+    RequestInstanceTool,
+    RunLIMEDatasetInstanceTool,
+    RunLIMENewInstanceTool,
+    UploadMetadataTool,
+    AddContextTool,
+    ResetSessionTool
 )
+
+
 def return_gemini_agent(user_message: str, system_state: dict):
-    
     API_KEY = enviroment()
-    gemini_agent =Agent(
+    gemini_agent = Agent(
         role="Conversational AI Assistant",
         goal="Understand the user's intent and autonomously take actions to assist in the explanation of machine learning model predictions.",
         backstory=(
@@ -23,16 +24,17 @@ def return_gemini_agent(user_message: str, system_state: dict):
         llm=LLM(
             model="gemini/gemini-2.0-flash-lite",
             temperature=0.2,
-            key=enviroment()
+            key=API_KEY
         ),
-        tools=[
-            PedirDatasetTool(),
-            AñadirContextoTool(),
-            ReiniciarTool(),
-            RecibirInstanciaDatasetTool(),
-            EjecutarCrewLIMEToolInstanciaDataset(),
-            EjecutarCrewLIMEToolInstanciaNueva(),
-            CargarMetadataTool()
+        tools= [
+            RequestDatasetTool(),
+            RequestInstanceTool(),
+            RunLIMEDatasetInstanceTool(),
+            RunLIMENewInstanceTool(),
+            UploadMetadataTool(),
+            AddContextTool(),
+            ResetSessionTool(),
         ]
+
     )
     return gemini_agent

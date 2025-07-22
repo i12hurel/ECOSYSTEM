@@ -3,125 +3,146 @@ import streamlit as st
 import pandas as pd
 import json
 from src.chatInterpreterLLM.crew.LIME_crew import return_resultado_crew_LIME
-from src.chatInterpreterLLM.tools.explanation_LIME import explicacion_LIME
+from pydantic import BaseModel
 
-class PedirDatasetTool(BaseTool):
-    name: str = "pedir_dataset"
-    description: str = "Pide al usuario que suba un dataset para entrenar el modelo."
+class RunLIMENewInstanceToolSchema(BaseModel):
+    instance_data: dict
 
-    def _run(self, **kwargs):
-        return "📥 Por favor, sube un archivo .csv desde la barra lateral."
-
-
-class RecibirInstanciaDatasetTool(BaseTool):
-    name: str = "recibir_instancia_dataset"
-    description: str = "Pide al usuario que suba una instancia en un archivo .csv para su explicación."
+class RequestDatasetTool(BaseTool):
+    name: str = "request_dataset"
+    description: str = "Asks the user to upload a dataset to train the model."
 
     def _run(self, **kwargs):
-        return "📤 Por favor, sube un archivo `.csv` con una única fila representando la nueva instancia."
+        return "📥 Please upload a `.csv` dataset from the sidebar."
 
 
-class EjecutarCrewLIMEToolInstanciaDataset(BaseTool):
-    name: str = "ejecutar_crew_LIME_dataset"
-    description: str = "Ejecuta la explicación de LIME para una instancia del dataset existente."
+class RequestInstanceTool(BaseTool):
+    name: str = "request_instance"
+    description: str = "Asks the user to upload a new instance as a `.csv` file with a single row."
+
+    def _run(self, **kwargs):
+        return "📤 Please upload a `.csv` file with a single row from the sidebar to generate the explanation."
+
+
+class RunLIMEDatasetInstanceTool(BaseTool):
+    name: str = "run_lime_dataset_instance"
+    description: str = "Runs the LIME explanation for an instance from the existing dataset."
 
     def _run(self, index: int = None, **kwargs):
         try:
             if st.session_state.dataset is None or st.session_state.model is None:
-                return "❌ No hay dataset ni modelo cargado."
+                return "❌ No dataset or model loaded."
             if index is None:
-                return "⚠️ Por favor, proporciona un índice válido."
+                return "⚠️ Please provide a valid index."
 
             if index < 0 or index >= len(st.session_state.dataset):
-                return f"⚠️ Índice fuera de rango. El dataset tiene {len(st.session_state.dataset)} filas."
+                return f"⚠️ Index out of range. The dataset contains {len(st.session_state.dataset)} rows."
 
-            # Paso 1: preparar instancia
-            target_column = st.session_state.dataset.columns[-1]
             instance = st.session_state.dataset.iloc[[index]]
+
+            target_column = st.session_state.dataset.columns[-1]
             if target_column in instance.columns:
                 instance = instance.drop(columns=[target_column])
             else:
-                return f"❌ La columna objetivo '{target_column}' no está en la instancia seleccionada."
+                return f"❌ Target column '{target_column}' not found in the selected instance."
 
-            # Paso 2: preparar x_train si es necesario
             st.session_state.x_train = st.session_state.dataset.drop(columns=[target_column])
 
-            # Paso 3: ejecutar explicación
-            resultado_lime = return_resultado_crew_LIME(st.session_state.model, st.session_state.x_train, instance)
-            st.session_state.lime_output = resultado_lime
-            return f"🧠 Explicación de la instancia {index}:\n```{resultado_lime}```"
+            lime_result = return_resultado_crew_LIME(st.session_state.model, st.session_state.x_train, instance)
+            st.session_state.lime_output = lime_result
+            return f"🧠 Explanation for instance {index}:\n```{lime_result}```"
 
         except Exception as e:
-            return f"❌ Error en la tool 'ejecutar_crew_LIME_dataset': {str(e)}"
+            return f"❌ Error in 'run_lime_dataset_instance' tool: {str(e)}"
 
 
-class EjecutarCrewLIMEToolInstanciaNueva(BaseTool):
-    name: str = "ejecutar_crew_LIME_nueva"
-    description: str = "Ejecuta la explicación de LIME para una nueva instancia pasada por el usuario."
+class RunLIMENewInstanceTool(BaseTool):
+    name: str = "run_lime_new_instance"
+    description: str = "Ejecuta LIME sobre la instancia cargada por el usuario."
 
-    def _run(self, instance_data: dict = None, **kwargs):
+    def _run(self, **kwargs):
         if st.session_state.model is None:
             return "❌ No hay modelo cargado."
 
-        if instance_data is None:
-            return "⚠️ Por favor, proporciona los datos de la nueva instancia como un diccionario."
+        df = st.session_state.get("dataset_instance")
+        if df is None or df.shape[0] != 1:
+            return "⚠️ No se encontró una instancia válida cargada."
+
+        instance_data = df.iloc[0].to_dict()
 
         try:
-            instancia = pd.DataFrame([instance_data])
-            st.session_state.x_train = instancia
+            df_instance = pd.DataFrame([instance_data])
+            target_column = st.session_state.dataset.columns[-1]
 
-            lime_output = explicacion_LIME(
-                model=st.session_state.model,
-                x_train=st.session_state.x_train,
-                instance=instancia
-            )
-            st.session_state.lime_output = lime_output
+            if target_column in df_instance.columns:
+                df_instance = df_instance.drop(columns=[target_column])
 
-            resultado = return_resultado_crew_LIME(
-                lime_output=lime_output,
-                info_text=json.dumps(st.session_state.metadata) if st.session_state.metadata else "",
-                info_experto="\n".join(st.session_state.expert_notes)
-            )
+            st.session_state.x_train = st.session_state.dataset.drop(columns=[target_column])
+            lime_result = return_resultado_crew_LIME(st.session_state.model, st.session_state.x_train, df_instance)
+            st.session_state.lime_output = lime_result
+            return f"✅ Explicación generada:\n\n```{lime_result}```"
 
-            return f"🧠 Explicación de la instancia proporcionada:\n```{resultado}```"
         except Exception as e:
-            return f"❌ No se pudo procesar la instancia: {str(e)}"
+            return f"❌ Error generando la explicación: {str(e)}"
 
 
-class CargarMetadataTool(BaseTool):
-    name: str = "cargar_metadata"
-    description: str = "Permite al usuario subir un archivo de metadata (.txt) desde la barra lateral para dar más infromación sobre el dataset."
+
+class UploadMetadataTool(BaseTool):
+    name: str = "upload_metadata"
+    description: str = "Allows the user to upload a `.txt` metadata file from the sidebar to provide additional dataset information."
 
     def _run(self, **kwargs):
-        txt_file = st.sidebar.file_uploader("📎 Subir metadata (.txt)", type=["txt"], key="metadata_file")
+        txt_file = st.sidebar.file_uploader("📎 Upload metadata (.txt)", type=["txt"], key="metadata_file")
         if txt_file:
             try:
                 content = txt_file.read().decode("utf-8")
                 st.session_state.metadata = content
-                return "🧠 Metadata cargada correctamente desde el archivo."
+                return "🧠 Metadata successfully loaded from file."
             except Exception as e:
-                return f"❌ Error al leer el archivo .txt: {e}"
-        return "⚠️ Por favor, sube un archivo de metadata en formato .txt desde la barra lateral."
+                return f"❌ Error reading the `.txt` file: {e}"
+        return "⚠️ Please upload a metadata file in `.txt` format from the sidebar."
 
-class AñadirContextoTool(BaseTool):
-    name: str = "añadir_contexto"
-    description: str = "Añade una observación o información adicional escrita por el usuario para enriquecer el análisis."
+
+class AddContextTool(BaseTool):
+    name: str = "add_context"
+    description: str = "Adds a user-provided note or additional information to enrich the analysis, but only when explicitly indicated."
 
     def _run(self, content: str = None, **kwargs):
         if not content:
-            return "⚠️ No se proporcionó ningún texto para añadir al contexto."
+            return "⚠️ No text provided to add to context."
 
         if "expert_notes" not in st.session_state:
             st.session_state.expert_notes = []
         st.session_state.expert_notes.append(content)
-        return "✅ Comentario añadido al contexto del sistema correctamente."
+        return "✅ Comment successfully added to system context."
 
 
-
-class ReiniciarTool(BaseTool):
-    name: str = "reiniciar_sesion"
-    description: str = "Reinicia toda la sesión y limpia el estado."
+class ResetSessionTool(BaseTool):
+    name: str = "reset_session"
+    description: str = "Resets the entire session and clears the state."
 
     def _run(self, **kwargs):
         st.session_state.clear()
-        return "🔄 Sesión reiniciada. Puedes comenzar desde cero."
+        return "🔄 Session reset. You can start over."
+
+
+class ExplainInstanceFlowTool(BaseTool):
+    name: str = "explain_instance_flow"
+    description: str = "Manages the full flow: uses the uploaded instance and runs LIME over it."
+
+    def _run(self, **kwargs):
+        # Step 1: Check if instance is already uploaded
+        df_instance = st.session_state.dataset_instance
+
+        if df_instance is not None:
+            if df_instance.shape[0] != 1:
+                return "❌ The file must contain exactly one row."
+            else:
+                instance_dict = df_instance.iloc[0].to_dict()
+                st.session_state.uploaded_instance = instance_dict
+
+                # Run LIME
+                result = RunLIMENewInstanceTool()._run(instance_data=instance_dict)
+                return f"✅ Explanation generated:\n\n{result}"
+
+        return "📤 Please upload a `.csv` file with a single row from the sidebar."

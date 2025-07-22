@@ -5,7 +5,7 @@ import json
 def return_task_interpretar_intencion(user_message, system_state: dict):
     serialized_state = json.dumps(system_state, indent=2)
 
-    return Task(
+    task= Task(
         description=f"""
         The user said: "{user_message}"
 
@@ -38,11 +38,17 @@ def return_task_interpretar_intencion(user_message, system_state: dict):
         - If the user message includes a new instance (i.e. a structured list of attribute values, such as a dictionary or JSON), or mentions "I want to explain this new instance", then:
             → Parse that data as a dictionary
             → Call: ejecutar_crew_LIME_nueva(instance_data=<parsed_instance>)
-            → If the system state includes `instance_uploaded: true`, assume the instance is already available in memory and do not ask again.
 
+        - If the system state includes `instance_uploaded: true` and the user says something like "I have uploaded the instance", "the file is ready", or "you can continue", then:
+            → Assume the instance is available in memory
+            → Retrieve it from the current state
+            → Call: ejecutar_crew_LIME_nueva(instance_data=<instance_from_state>)
 
+        - If the instance_uploaded state is True, never use the tool recibir_instancia_dataset again.
 
-        - If the user provides any textual insight, commentary, or clarification, add it to the system using:
+        - Do NOT use `añadir_contexto` if the message is only to confirm a file upload.
+
+        - If the user provides any textual insight, commentary, or clarification (not file-related), add it using:
         `añadir_contexto(content=<user_input>)`
 
         - Never call `ejecutar_crew_LIME_dataset` without a valid integer index.
@@ -52,3 +58,5 @@ def return_task_interpretar_intencion(user_message, system_state: dict):
         expected_output="A helpful assistant message or a tool-executed response.",
         agent=return_gemini_agent(user_message, system_state)
     )
+
+    return task
