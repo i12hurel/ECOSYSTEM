@@ -23,36 +23,42 @@ def return_task_interpretar_intencion(user_message, system_state: dict):
         - Reset the session
 
         Available tools:
-        - pedir_dataset
-        - cargar_metadata
-        - recibir_instancia_dataset
-        - ejecutar_crew_LIME_dataset (index: int)
-        - ejecutar_crew_LIME_nueva (instance_data: dict)
-        - añadir_contexto (content: str)
-        - reiniciar_sesion
+        - request_dataset
+        - request_instance
+        - run_lime_dataset_instance (index: int)
+        - run_lime_new_instance 
+        - upload_metadata 
+        - add_context (content: str)
+        - reset_session
 
         How to choose the correct tool:
         - If the user asks to explain an instance from the dataset and provides an index (e.g. "explain instance 5"), call:
-        `ejecutar_crew_LIME_dataset(index=5)`
+        `run_lime_dataset_instance (index=5)`
 
         - If the user message includes a new instance (i.e. a structured list of attribute values, such as a dictionary or JSON), or mentions "I want to explain this new instance", then:
             → Parse that data as a dictionary
-            → Call: ejecutar_crew_LIME_nueva(instance_data=<parsed_instance>)
+            → Call: run_lime_new_instance
 
         - If the system state includes `instance_uploaded: true` and the user says something like "I have uploaded the instance", "the file is ready", or "you can continue", then:
             → Assume the instance is available in memory
             → Retrieve it from the current state
-            → Call: ejecutar_crew_LIME_nueva(instance_data=<instance_from_state>)
+            → Call: run_lime_new_instance
 
-        - If the instance_uploaded state is True, never use the tool recibir_instancia_dataset again.
+        - If the system state includes `metadata_present is not None` and the user says something like "I have uploaded the information", "the metadata is ready", or "you can continue", then:
+            → Assume the metadata is available in memory
+            → Retrieve it from the current state
 
-        - Do NOT use `añadir_contexto` if the message is only to confirm a file upload.
+        - If the instance_uploaded state is True, never use the tool 'request_instance' again.
+
+        - Do NOT use `add_context` if the message is only to confirm a file upload.
 
         - If the user provides any textual insight, commentary, or clarification (not file-related), add it using:
-        `añadir_contexto(content=<user_input>)`
+        `add_context(content=<user_input>)`
 
-        - Never call `ejecutar_crew_LIME_dataset` without a valid integer index.
+        - Never call `run_lime_dataset_instance` without a valid integer index.
+
         - Do not call any tool without the required argument.
+        
         - Always respond clearly and conversationally after using a tool.
         """,
         expected_output="A helpful assistant message or a tool-executed response.",

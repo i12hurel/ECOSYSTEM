@@ -47,15 +47,17 @@ st.title("💬 Machine Learning Explanation Assistant")
 if dataset_file and not st.session_state.dataset_uploaded:
     st.session_state.dataset = pd.read_csv(dataset_file, delimiter=";")
     st.session_state.model, st.session_state.x_train = value_model(st.session_state.dataset)
-    st.session_state.dataset_uploaded = True  # ✅ Solo mostrar una vez
+    st.session_state.dataset_uploaded = True  
     st.session_state.messages.append({"role": "assistant", "content": "✅ Dataset uploaded and model trained."})
-    st.session_state.messages.append({"role": "assistant", "content": "__SHOW_DATASET__"})  # marcador especial
+    st.session_state.messages.append({"role": "assistant", "content": "__SHOW_DATASET__"})  
 
 
 # Procesar metadata
 if metadata_file and st.session_state.metadata is None:
     st.session_state.metadata = metadata_file.read().decode("utf-8")
     st.session_state.messages.append({"role": "assistant", "content": "🧠 Metadata loaded."})
+    st.session_state.messages.append({"role": "assistant", "content": "__SHOW_METADATA__"})
+
 
 if instance_file and st.session_state.dataset_instance_uploaded is None:
     st.session_state.dataset_instance = pd.read_csv(instance_file, delimiter=";")
@@ -76,6 +78,12 @@ for msg in st.session_state.messages:
                 st.dataframe(st.session_state.dataset_instance)
             else:
                 st.markdown("⚠️ No instance available to display.")
+        elif msg["content"] == "__SHOW_METADATA__":
+            if st.session_state.metadata:
+                st.markdown("### 📝 Metadata:")
+                st.text(st.session_state.metadata)
+            else:
+                st.markdown("⚠️ No metadata available to display.")
         else:
             st.markdown(msg["content"])
 

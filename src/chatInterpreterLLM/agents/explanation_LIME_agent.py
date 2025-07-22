@@ -18,7 +18,6 @@ def return_explanation_LIME_agent():
             model="gemini/gemini-2.0-flash-lite",
             temperature = 0.0,
             key = API_KEY,
-            #vertex_credentials=vertex_credentials_json
         ) 
     )
     return explanation_LIME_agent

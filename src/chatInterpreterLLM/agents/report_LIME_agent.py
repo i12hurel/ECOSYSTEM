@@ -5,7 +5,7 @@ def return_report_LIME_agent():
     API_KEY = enviroment()
     report_LIME_agent = Agent(
         role='AI Report Generator LIME',
-        goal='Generate an assessment report integrating the LIME explanation with additional information from the info_text to provide the final expert with a clear summary of the factors influencing the prediction.',
+        goal='Generate an assessment report integrating the LIME explanation with additional information from the metadata to provide the final expert with a clear summary of the factors influencing the prediction.',
         backstory="""You are an expert in analyzing machine learning models and preparing assessment reports. Your task is to combine the explanation obtained with LIME (in JSON format already translated into natural language) with additional details about the database (e.g., title, sources, description, statistics, etc.).
 
         You must:
@@ -22,7 +22,6 @@ def return_report_LIME_agent():
             model="gemini/gemini-2.0-flash-lite",
             temperature = 0.0,
             key = API_KEY,
-            #vertex_credentials=vertex_credentials_json
         ) 
     )
     return report_LIME_agent

@@ -12,7 +12,7 @@ def return_task_explanation_LIME(model, x_train, instancia):
                       4. List TOP 3 features POSITIVELY affecting it (weights > 0) and their impact.
                       5. Explain why the prediction was chosen over other classes.
                       6. Explicitly compare probabilities between classes.
-                      
+
                       **Output Format:**
                     Prediction: [The class predicted]
                     Why?: [Explanation based on probabilities]

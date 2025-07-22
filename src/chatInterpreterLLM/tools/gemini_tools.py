@@ -3,10 +3,7 @@ import streamlit as st
 import pandas as pd
 import json
 from src.chatInterpreterLLM.crew.LIME_crew import return_resultado_crew_LIME
-from pydantic import BaseModel
 
-class RunLIMENewInstanceToolSchema(BaseModel):
-    instance_data: dict
 
 class RequestDatasetTool(BaseTool):
     name: str = "request_dataset"
@@ -48,7 +45,7 @@ class RunLIMEDatasetInstanceTool(BaseTool):
 
             st.session_state.x_train = st.session_state.dataset.drop(columns=[target_column])
 
-            lime_result = return_resultado_crew_LIME(st.session_state.model, st.session_state.x_train, instance)
+            lime_result = return_resultado_crew_LIME(st.session_state.model, st.session_state.x_train, instance, st.session_state.metadata)
             st.session_state.lime_output = lime_result
             return f"🧠 Explanation for instance {index}:\n```{lime_result}```"
 
@@ -78,7 +75,7 @@ class RunLIMENewInstanceTool(BaseTool):
                 df_instance = df_instance.drop(columns=[target_column])
 
             st.session_state.x_train = st.session_state.dataset.drop(columns=[target_column])
-            lime_result = return_resultado_crew_LIME(st.session_state.model, st.session_state.x_train, df_instance)
+            lime_result = return_resultado_crew_LIME(st.session_state.model, st.session_state.x_train, df_instance, st.session_state.metadata)
             st.session_state.lime_output = lime_result
             return f"✅ Explicación generada:\n\n```{lime_result}```"
 
@@ -86,20 +83,11 @@ class RunLIMENewInstanceTool(BaseTool):
             return f"❌ Error generando la explicación: {str(e)}"
 
 
-
 class UploadMetadataTool(BaseTool):
     name: str = "upload_metadata"
     description: str = "Allows the user to upload a `.txt` metadata file from the sidebar to provide additional dataset information."
 
     def _run(self, **kwargs):
-        txt_file = st.sidebar.file_uploader("📎 Upload metadata (.txt)", type=["txt"], key="metadata_file")
-        if txt_file:
-            try:
-                content = txt_file.read().decode("utf-8")
-                st.session_state.metadata = content
-                return "🧠 Metadata successfully loaded from file."
-            except Exception as e:
-                return f"❌ Error reading the `.txt` file: {e}"
         return "⚠️ Please upload a metadata file in `.txt` format from the sidebar."
 
 
@@ -125,24 +113,3 @@ class ResetSessionTool(BaseTool):
         st.session_state.clear()
         return "🔄 Session reset. You can start over."
 
-
-class ExplainInstanceFlowTool(BaseTool):
-    name: str = "explain_instance_flow"
-    description: str = "Manages the full flow: uses the uploaded instance and runs LIME over it."
-
-    def _run(self, **kwargs):
-        # Step 1: Check if instance is already uploaded
-        df_instance = st.session_state.dataset_instance
-
-        if df_instance is not None:
-            if df_instance.shape[0] != 1:
-                return "❌ The file must contain exactly one row."
-            else:
-                instance_dict = df_instance.iloc[0].to_dict()
-                st.session_state.uploaded_instance = instance_dict
-
-                # Run LIME
-                result = RunLIMENewInstanceTool()._run(instance_data=instance_dict)
-                return f"✅ Explanation generated:\n\n{result}"
-
-        return "📤 Please upload a `.csv` file with a single row from the sidebar."
