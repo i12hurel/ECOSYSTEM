@@ -1,22 +1,30 @@
 # ECOSYSTEM
 
-Este proyecto contiene un sistema de interpretación de modelos de machine learning utilizando técnicas como LIME, SHAP y ANCHOR, implementado con CrewAI y otros módulos de IA explicable.
+Este proyecto tarta de la creación asistente conversacional inteligente que interpreta modelos de Machine Learning combinando LIME, SHAP y Anchor, integrando información experta y contextual para ofrecer explicaciones claras y comprensibles en una interfaz intuitiva.
 
 ## Estructura del proyecto
 
 ```
-ECOSYSTEM-MODULADO/
+ECOSYSTEM/
 ├── src/                          # Código fuente
 │   ├── chatInterpreterLLM/
 │       ├── crew/
-│       ├── env/
+│       ├── agents/
 │       ├── knowledge/
 │       ├── tasks/
 │       ├── tools/
-│       └── training/
+│       ├── streamlit/
+│       ├──training/
+│       ├── ecosystem.py
+│       ├── env.py
+│       └── main.py
 ├── requirements.txt              # Dependencias del proyecto
-├── .vscode/settings.json          # Configuración recomendada para VSCode
+├── .vscode        # Configuración recomendada para VSCode
+    ├── settings.json 
+    └── launch.json         
+├── .env        
 └── README.md                      # Instrucciones
+
 ```
 
 ## 🚀 Cómo empezar
@@ -24,8 +32,8 @@ ECOSYSTEM-MODULADO/
 ### 1. Clona el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/ECOSYSTEM-MODULADO.git
-cd ECOSYSTEM-MODULADO
+git clone (https://github.com/i12hurel/ECOSYSTEM.git)
+cd ECOSYSTEM
 ```
 
 ### 2. Crea un entorno virtual
@@ -63,17 +71,6 @@ pip install -r requirements.txt
 
 Asegúrate de tener este archivo en `.vscode/settings.json`:
 
-```json
-{
-  "python.analysis.extraPaths": [
-    "./src"
-  ],
-  "python.defaultInterpreterPath": "./venv/Scripts/python.exe"
-}
-```
-
-*(En Mac/Linux, la ruta es `./venv/bin/python`.)*
-
 Esto permite que VSCode reconozca correctamente los imports relativos desde `src/`.
 
 ### 6. Ejecutar el proyecto
@@ -81,7 +78,7 @@ Esto permite que VSCode reconozca correctamente los imports relativos desde `src
 Desde la raíz del proyecto:
 
 ```bash
-python -m src.chatInterpreterLLM.main
+streamlit run src/chatInterpreterLLM/streamlit/gemini_app.py
 ```
 
 ---
@@ -89,13 +86,5 @@ python -m src.chatInterpreterLLM.main
 ## ✅ Requisitos
 
 * Python 3.10 o superior
-* Visual Studio Code (opcional, pero recomendado)
+* Visual Studio Code 
 
----
-
-## ⚠️ Notas importantes
-
-* **No subas el `venv/`** a GitHub. Usa `.gitignore`.
-* Asegúrate de tu conexión a internet para usar CrewAI con los modelos LLM.
-
----
