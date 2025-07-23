@@ -87,6 +87,11 @@ for msg in st.session_state.messages:
         else:
             st.markdown(msg["content"])
 
+if st.session_state.expert_notes:
+    st.markdown("### 📝 Expert Notes:")
+    for note in st.session_state.expert_notes:
+        st.markdown(f"- {note}")
+
 # --- Chat input ---
 user_input = st.chat_input("Write your instruction here...")
 if user_input:

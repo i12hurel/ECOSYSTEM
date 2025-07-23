@@ -481,7 +481,7 @@ task_report_LIME = Task(
     generate an assessment report for the final expert.
         
     **Instructions:**
-    1. Briefly summarize the prediction: indicate the predicted class and the relative probabilities of each class.
+    1. Briefly summarize theI'm going to give you some extra information about the dataset. prediction: indicate the predicted class and the relative probabilities of each class.
     2. Extract and list the 3 features with the highest positive weight (weight > 0) and the 3 with the highest negative weight (weight < 0). For each, provide the feature name, the value obtained, and the weight, along with a brief explanation of why they positively or negatively impact the prediction.
     3. Incorporate additional information from the info_text (e.g., title, sources, description, statistics) to contextualize the analysis.
     4. Write the final report in natural language, addressed to the final expert, explaining in a clear and structured manner the factors influencing the prediction and how the information from the info_text supports the analysis.

@@ -45,7 +45,12 @@ class RunLIMEDatasetInstanceTool(BaseTool):
 
             st.session_state.x_train = st.session_state.dataset.drop(columns=[target_column])
 
-            lime_result = return_resultado_crew_LIME(st.session_state.model, st.session_state.x_train, instance, st.session_state.metadata)
+            expert_notes = st.session_state.get("expert_notes", [])
+            #expert_notes = "\n\nExpert notes:\n" + "\n".join(f"- {note}" for note in notes) if notes else ""
+
+            metadata = st.session_state.get("metadata", "No metadata provided.")
+
+            lime_result = return_resultado_crew_LIME(st.session_state.model, st.session_state.x_train, instance, metadata, expert_notes)
             st.session_state.lime_output = lime_result
             return f"🧠 Explanation for instance {index}:\n```{lime_result}```"
 
@@ -75,7 +80,13 @@ class RunLIMENewInstanceTool(BaseTool):
                 df_instance = df_instance.drop(columns=[target_column])
 
             st.session_state.x_train = st.session_state.dataset.drop(columns=[target_column])
-            lime_result = return_resultado_crew_LIME(st.session_state.model, st.session_state.x_train, df_instance, st.session_state.metadata)
+
+            expert_notes = st.session_state.get("expert_notes", [])
+            #expert_notes = "\n\nExpert notes:\n" + "\n".join(f"- {note}" for note in notes) if notes else ""
+
+            metadata = st.session_state.get("metadata", "No metadata provided.")
+
+            lime_result = return_resultado_crew_LIME(st.session_state.model, st.session_state.x_train, df_instance, metadata, expert_notes)
             st.session_state.lime_output = lime_result
             return f"✅ Explicación generada:\n\n```{lime_result}```"
 
@@ -101,6 +112,7 @@ class AddContextTool(BaseTool):
 
         if "expert_notes" not in st.session_state:
             st.session_state.expert_notes = []
+            
         st.session_state.expert_notes.append(content)
         return "✅ Comment successfully added to system context."
 
