@@ -13,21 +13,24 @@ def return_task_explanation_LIME(model, x_train, instancia):
                       5. Explain why the prediction was chosen over other classes.
                       6. Explicitly compare probabilities between classes.
 
-                      **Output Format:**
-                    Prediction: [The class predicted]
-                    Why?: [Explanation based on probabilities]
+                    **Output Format (strict, no backticks):**
+                    ### Prediction
+                        [The predicted class]
+
+                    ### Rationale
+                      [Explanation based on probabilities]
                     
-                    Top Positive Ratings:
+                    ### Top Positive Ratings:
                     - [Feature 1] = [Value]: +[Weight]. Explanation : [Reason why it's positive]
                     - [Feature 2] = [Value]: +[Weight]. Explanation : [Reason why it's positive]
                     - [Feature 3] = [Value]: +[Weight]. Explanation : [Reason why it's positive]
 
-                    Top Negative Ratings:
+                    ### Top Negative Ratings:
                     - [Feature 1] = [Value]: -[Weight]. Explanation : [Reason why it's negative]
                     - [Feature 2] = [Value]: -[Weight]. Explanation : [Reason why it's negative]
                     - [Feature 3] = [Value]: -[Weight]. Explanation : [Reason why it's negative]
 
-                    LIME Output: 
+                    ### LIME Raw Output: 
                     {lime_output}""",
       expected_output="""Clear text explaining key factors. Structured text with 3 positive and 3 negative contributors + prediction rationale.
                       Text with format: [Feature] = [Value]: [Weight Explanation]. """,

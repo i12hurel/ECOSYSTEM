@@ -56,6 +56,9 @@ def return_task_interpretar_intencion(user_message, system_state: dict):
         `add_context(content=<user_input>)`
 
         - Never call `run_lime_dataset_instance` without a valid integer index.
+        
+        - When you execute a tool that generates a model explanation (run_lime_dataset_instance or run_lime_new_instance), **do not rewrite, summarize, or alter the content**. Always return the full output exactly as provided.
+
 
         - Do not call any tool without the required argument.
         

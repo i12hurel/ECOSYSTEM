@@ -14,7 +14,7 @@ ECOSYSTEM/
 │       ├── tasks/
 │       ├── tools/
 │       ├── streamlit/
-│       ├──training/
+│       ├── training/
 │       ├── ecosystem.py
 │       ├── env.py
 │       └── main.py
@@ -36,10 +36,10 @@ git clone (https://github.com/i12hurel/ECOSYSTEM.git)
 cd ECOSYSTEM
 ```
 
-### 2. Crea un entorno virtual
+### 2. Crea un entorno virtual (si ya existe, eliminalo y vuelvelo a crear)
 
 ```bash
-python -m venv venv
+python -m venv .venv
 ```
 
 ### 3. Activa el entorno virtual
@@ -47,12 +47,12 @@ python -m venv venv
 * En **Windows**:
 
   ```bash
-  venv\Scripts\activate
+  .venv\Scripts\activate
   ```
 * En **Mac/Linux**:
 
   ```bash
-  source venv/bin/activate
+  source .venv/bin/activate
   ```
 
 ### 4. Instala las dependencias
@@ -65,22 +65,19 @@ pip install -r requirements.txt
 
 #### Paso 1: Selecciona el intérprete Python
 
-* `Ctrl+Shift+P` → **Python: Select Interpreter** → Elige el Python de `./venv`.
+* `Ctrl+Shift+P` → **Python: Select Interpreter** → Elige el Python de `./.venv`.
 
-#### Paso 2: Añade configuración para los imports
-
-Asegúrate de tener este archivo en `.vscode/settings.json`:
-
-Esto permite que VSCode reconozca correctamente los imports relativos desde `src/`.
+#### Paso 2: Añade una API KEY de gemini
+ En la carpeta src/chatInterpreterLLM, añade un .env, donde añadas:
+ " GEMINI_API_KEY ="TU_API_KEY" "
 
 ### 6. Ejecutar el proyecto
 
 Desde la raíz del proyecto:
 
 ```bash
-streamlit run src/chatInterpreterLLM/streamlit/gemini_app.py
+python -m streamlit run src/chatInterpreterLLM/streamlit/gemini_app.py
 ```
-
 ---
 
 ## ✅ Requisitos

@@ -17,22 +17,26 @@ def return_task_report_LIME(metadata, expert_notes):
         - Reformulate the narrative to create a consistent explanation that merges model output with user context.
         7. Write the final report in a clear and structured way, balancing objective analysis with contextual understanding.
 
-        **Suggested output format:**
-        Prediction: [Predicted class]
-        Rationale: [Comparison of probabilities and reason for choice]
+        **Suggested output format (strict, no backticks):**
+        
+        ### Prediction
+        [Predicted class]
 
-        Top Positives:
+        ### Rationale
+        [Comparison of probabilities and reason for choice]
+
+        ### Top Positive Ratings:
         - [Feature 1] = [value]: +[weight]. [Brief explanation]
         - [Feature 2] = [value]: +[weight]. [Brief explanation]
         - [Feature 3] = [value]: +[weight]. [Brief explanation]
 
-        Top Negatives:
+        ### Top Negative Ratings:
         - [Feature 1] = [value]: -[weight]. [Brief explanation]
         - [Feature 2] = [value]: -[weight]. [Brief explanation]
         - [Feature 3] = [value]: -[weight]. [Brief explanation]
 
 
-        Final Report:
+        ### Final Report:
         [Structured and coherent narrative that includes the explanation, the dataset context, and the user's observation, reformulated when necessary to resolve contradictions.]    """,
         expected_output="Coherent and context-aware final report integrating LIME explanation, dataset info, and user context. Reformulate when contradictions appear.",
         agent=return_report_LIME_agent(),
