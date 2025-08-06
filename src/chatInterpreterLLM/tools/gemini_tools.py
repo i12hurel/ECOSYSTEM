@@ -3,6 +3,8 @@ import streamlit as st
 import pandas as pd
 import json
 from src.chatInterpreterLLM.crew.LIME_crew import return_resultado_crew_LIME
+import io
+import matplotlib.pyplot as plt
 
 
 class RequestDatasetTool(BaseTool):

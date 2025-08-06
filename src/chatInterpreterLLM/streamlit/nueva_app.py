@@ -3,7 +3,7 @@ import pandas as pd
 import json
 
 from src.chatInterpreterLLM.training.model import value_model
-from src.chatInterpreterLLM.crew.gemini_crew import return_resultado_crew_gemini
+from src.chatInterpreterLLM.crew.coordinator_crew import return_resultado_crew_coordinator
 
 
 st.set_page_config(page_title="ML Explanation Chatbot", page_icon="💬")
@@ -27,12 +27,16 @@ if "dataset_uploaded" not in st.session_state:
     st.session_state.dataset_uploaded = False
 if "show_instance_uploader" not in st.session_state:
     st.session_state.show_instance_uploader = False
-if "dataset_instance_uploaded" not in st.session_state:
-    st.session_state.dataset_instance_uploaded = None
+if "instance_uploaded" not in st.session_state:
+    st.session_state.instance_uploaded = None
 if "dataset_instance" not in st.session_state:
     st.session_state.dataset_instance = None
 if "lime_plot" not in st.session_state:
     st.session_state.lime_plot = None
+if "new_instance" not in st.session_state:
+    st.session_state.new_instance = None
+if "user_input" not in st.session_state:
+    st.session_state.user_input = None
 
 # --- Sidebar: Upload only ---
 with st.sidebar:
@@ -61,9 +65,9 @@ if metadata_file and st.session_state.metadata is None:
     st.session_state.messages.append({"role": "assistant", "content": "__SHOW_METADATA__"})
 
 
-if instance_file and st.session_state.dataset_instance_uploaded is None:
-    st.session_state.dataset_instance = pd.read_csv(instance_file, delimiter=";")
-    st.session_state.dataset_instance_uploaded = True
+if instance_file and st.session_state.instance_uploaded is None:
+    st.session_state.new_instance = pd.read_csv(instance_file, delimiter=";")
+    st.session_state.instance_uploaded = True
     st.session_state.messages.append({"role": "assistant", "content": "📊 Instance data loaded."})
     st.session_state.messages.append({"role": "assistant", "content": "__SHOW_INSTANCE__"})
 
@@ -76,9 +80,9 @@ for msg in st.session_state.messages:
             st.markdown("### 📊 Dataset preview:")
             st.dataframe(st.session_state.dataset)
         elif msg["content"] == "__SHOW_INSTANCE__":
-            if st.session_state.dataset_instance_uploaded:
+            if st.session_state.instance_uploaded:
                 st.markdown("### 🔍 Instance to explain:")
-                st.dataframe(st.session_state.dataset_instance)
+                st.dataframe(st.session_state.new_instance)
             else:
                 st.markdown("⚠️ No instance available to display.")
         elif msg["content"] == "__SHOW_METADATA__":
@@ -116,22 +120,19 @@ if user_input:
         "metadata_present": st.session_state.metadata is not None,
         "notes_count": len(st.session_state.expert_notes),
         "expert_notes": st.session_state.expert_notes,
-        "instance_uploaded": (
-                st.session_state.dataset_instance is not None and
-                isinstance(st.session_state.dataset_instance, pd.DataFrame) and
-                st.session_state.dataset_instance.shape[0] == 1
-        ),
+        "instance_uploaded": st.session_state.instance_uploaded is not None,
         "lime_plot": st.session_state.lime_plot is not None,
     }
 
     # Crew execution
-    response = return_resultado_crew_gemini(user_input, system_state)
+    st.session_state.user_input = user_input
+    response = return_resultado_crew_coordinator(user_input)
 
     st.session_state.messages.append({"role": "assistant", "content": response})
     with st.chat_message("assistant"):
         st.markdown(response, unsafe_allow_html=True)
-    
-    if st.session_state.lime_plot is not None:
-        st.markdown("### 📊 LIME Explanation Plot")
-        st.image(st.session_state.lime_plot, caption="LIME Explanation Plot", use_container_width=True)
+
+    # if st.session_state.lime_plot is not None:
+    #     st.markdown("### 📊 LIME Explanation Plot")
+    #     st.image(st.session_state.lime_plot, caption="LIME Explanation Plot", use_container_width=True)
 

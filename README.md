@@ -32,7 +32,7 @@ ECOSYSTEM/
 ### 1. Clona el repositorio
 
 ```bash
-git clone (https://github.com/i12hurel/ECOSYSTEM.git)
+git clone https://github.com/i12hurel/ECOSYSTEM.git
 cd ECOSYSTEM
 ```
 

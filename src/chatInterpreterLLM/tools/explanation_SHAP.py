@@ -4,6 +4,8 @@ import shap
 import json
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import streamlit as st
 
 def explicacion_SHAP():
 
@@ -20,6 +22,10 @@ def explicacion_SHAP():
     explainer = shap.Explainer(model, x_train)
 
     shap_values = explainer(instancia)
+
+    #fig, ax = plt.subplots()
+    #shap.plots.waterfall(shap_values[0], max_display=10, show=False)
+    #st.session_state.shap_plot = fig
 
     valuesSHAP = np.array(shap_values.values[0]) 
     shap_values_for_class = valuesSHAP[:, class_index] 

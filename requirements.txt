@@ -1,5 +1,7 @@
 streamlit
 crewai
+crewai.tools
 scikit-learn
 lime
 shap
+alibi
